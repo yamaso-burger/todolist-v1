@@ -37,7 +37,7 @@ app.get('/', (req, res)=>{
             day = "X Day";
             break;
     }
-    res.render("list", {kindOfDay: day});
+    
 });
 
 app.listen(port, ()=>{
