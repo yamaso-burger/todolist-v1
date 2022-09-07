@@ -10,6 +10,7 @@ app.use(express.static("public"));
 
 let items = ['Add what you going to do!'];
 let isFirstAdd = true;
+let workItems = [];
 
 app.get('/', (req, res)=>{
 
@@ -22,18 +23,40 @@ app.get('/', (req, res)=>{
     };
 
     let day = today.toLocaleDateString("en-US", options);
-    res.render("list", {kindOfDay: day, newItems: items});
+    res.render("list", {listTitle: day, newItems: items});
 });
 
 app.post('/', (req, res)=>{
-    if(isFirstAdd) {
-        isFirstAdd = false;
-        items = [];
-    }
-    items.push(req.body.newItem);
+    let item = req.body.newItem
+    if (req.body.list === "Work") {
+        workItems.push(item);
 
-    res.redirect("/");
+        res.redirect("/work");
+    } else {
+
+        if(isFirstAdd) {
+            isFirstAdd = false;
+            items = [];
+        }
+        items.push(item);
+    
+        res.redirect("/");
+    }
 });
+
+app.get("/work", (req, res)=>{
+    res.render("list", {listTitle: "Work List", newItems: workItems});
+});
+
+app.post("/work", (req, res)=>{
+    let item = req.body.newItem;
+    workItems.push(item);
+    res.redirect("/work");
+});
+
+app.get("/about", (req, res)=>{
+    res.render("about");
+})
 
 app.listen(port, ()=>{
     console.log('Running on port ' + port);
