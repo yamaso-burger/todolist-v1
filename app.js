@@ -6,6 +6,7 @@ let port = 3000;
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
 
 let items = ['Add what you going to do!'];
 let isFirstAdd = true;
